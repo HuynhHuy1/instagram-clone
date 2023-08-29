@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "../../../../MessageService"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "src"
+	}
+}

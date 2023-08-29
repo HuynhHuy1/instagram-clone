@@ -1,0 +1,51 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: project_app
+    restart: always
+    tty: true
+    working_dir: /var/www/html
+    volumes:
+      - './:/var/www/html'
+    environment:
+      DB_HOST: database
+      DB_DATABASE: laravel
+      DB_USERNAME: root
+      DB_PASSWORD: root
+  webserver:
+    image: nginx
+    container_name: project_webserver
+    restart: always
+    tty: true
+    ports:
+      - '9000:80'
+    volumes:
+      - './:/var/www/html'
+      - './nginx/conf.d/:/etc/nginx/conf.d/'
+  database:
+    image: 'mysql:8.0'
+    container_name: database
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: root
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    tty: true
+    depends_on:
+      - database
+    ports:
+      - '9001:80'
+    environment:
+      PMA_HOST: database
+      PMA_USER: root
+      PMA_PASSWORD: root
+      UPLOAD_LIMIT: 300M
+volumes:
+  db_data:  
